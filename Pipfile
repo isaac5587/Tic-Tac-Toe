@@ -9,6 +9,7 @@ flask_migrate = "~=2.5"
 flask_sqlalchemy = "~=2.4"
 mypy = "~=0.7"
 mysqlclient = "*"
+python-dotenv = "*"
 
 [dev-packages]
 
