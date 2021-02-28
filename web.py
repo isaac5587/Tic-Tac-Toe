@@ -18,9 +18,6 @@ def register_player(username: str) -> utils.JsonResponse:
   if player_exists(username):
     return {"error": "A player with that name already exists"}, 400
 
-  if username == "cerebro":
-    return {"error": "Cannot register a player with the special username 'cerebro'"}, 400
-
   new_player = models.PlayerRecord(username=username)
   db.session.add(new_player)
   db.session.commit()
