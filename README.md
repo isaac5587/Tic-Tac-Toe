@@ -22,7 +22,7 @@ Complete all the setup steps in https://docs.google.com/document/d/1WNvt-ci3ELyn
     ```
 1. Generate a new database migration (the player model is the only provided model in models.py):
     ```bash
-    flask db revision --autogenerate -m 'player model'
+    flask db migrate -m 'add player model'
     ```
 1. Run your newly minted database migration:
     ```bash

@@ -34,7 +34,3 @@ def player_exists(username: str) -> bool:
   return (models.PlayerRecord.query
     .filter(models.PlayerRecord.username == username)
     .count()) > 0
-
-
-if __name__ == "__main__":
-  app.run(host="0.0.0.0", port=5000)
