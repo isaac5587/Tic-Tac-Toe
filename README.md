@@ -26,7 +26,7 @@ Complete all the setup steps in https://docs.google.com/document/d/1WNvt-ci3ELyn
     ```
 1. Run your newly minted database migration:
     ```bash
-    flask db upgrade
+
     ```
 1. Run the app!
     ```bash

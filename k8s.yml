@@ -1,0 +1,102 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: isaac-t3
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    app: t3
+    role: web
+    svc: t3
+  name: t3-sa
+  namespace: isaac-t3
+--- 
+apiVersion: v1
+kind: Service
+metadata: 
+  labels: 
+    app: t3
+    role: web
+    svc: t3
+  name: t3-svc
+  namespace: isaac-t3
+spec: 
+  ports: 
+    - name: http
+      port: 5000
+      protocol: TCP
+      targetPort: http
+  selector: 
+    app: t3
+    role: web
+    svc: t3
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: t3
+    role: web
+    svc: t3
+  name: t3-web
+  namespace: isaac-t3
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: t3
+      role: web
+      svc: t3
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: t3
+        role: web
+        svc: t3
+    spec:
+      containers:
+      - image: 924573042143.dkr.ecr.us-east-1.amazonaws.com/isaac-t3:latest
+        imagePullPolicy: Always
+        name: t3
+        envFrom:
+        - configMapRef:
+              name: t3-config
+        - secretRef:
+              name: t3-secrets
+        ports:
+        - containerPort: 5000
+          name: http
+          protocol: TCP
+      restartPolicy: Always
+      serviceAccountName: t3-sa
+---
+apiVersion: v1
+data: 
+  FLASK_APP: web.py
+  FLASK_ENV: production
+  MYSQL_DATABASE: "isaac_t3"
+  MYSQL_HOST: t3-isaac.cetfhp3t10vz.us-east-1.rds.amazonaws.com
+  MYSQL_PORT: "3306"
+  MYSQL_USER: root
+kind: ConfigMap
+metadata: 
+  name: t3-config
+  namespace: isaac-t3
+--- 
+apiVersion: v1
+data: 
+  MYSQL_PASSWORD: cGFzc3dvcmQ=
+kind: Secret
+metadata: 
+  name: t3-secrets
+  namespace: isaac-t3
+type: Opaque

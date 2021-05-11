@@ -3,7 +3,7 @@ from __future__ import annotations
 import client
 import models
 
-t3 = client.Client("http://localhost:5000")
+t3 = client.Client("http://isaac-t3.csci390.com:5000")
 
 def get_menu_choice() -> int:
   while True:
